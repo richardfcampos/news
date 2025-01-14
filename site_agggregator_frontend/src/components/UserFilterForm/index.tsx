@@ -29,7 +29,7 @@ const UserFilterForm = ({ onSubmit }: UserFilterFormProps) => {
 
     return (
         <div className="p-6 shadow-md rounded-lg w-full space-y-6">
-            <h2 className="text-xl font-semibold text-gray-800 text-center">User Filters</h2>
+            <h2 className="text-xl font-semibold text-gray-800 text-center">User Preferences</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <CustomSelect
                     id="categories"
