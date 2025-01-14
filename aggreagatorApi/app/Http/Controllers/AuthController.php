@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignUpRequest;
-use App\Models\User;
 use App\Services\UsersService;
-use Illuminate\Support\Facades\Hash;
+use Exception;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -18,25 +19,22 @@ class AuthController extends Controller
     }
 
 
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request): JsonResponse
     {
-        $user = User::where('email', $request->email)->first();
+        try {
+            $data = $this->usersService->login($request->toDto());
 
-        // Verify password
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json($data);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        // Create token
-        $token = $user->createToken('api-token')->plainTextToken;
-
-        // Return token
-        return response()->json([...$user->toArray(), ...['token' => $token]]);
     }
 
-    public function signup(SignUpRequest $request)
+    public function signup(SignUpRequest $request): JsonResponse
     {
-        $user = $this->usersService->createUser($request);
+        $user = $this->usersService->createUser($request->toDto());
         return response()->json($user);
 
     }

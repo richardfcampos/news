@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Dto\GetArticlesData;
 use App\Http\Requests\GetArticlesRequest;
 use App\Services\ArticlesService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
 
 class ArticlesController extends Controller
 {
@@ -18,13 +16,9 @@ class ArticlesController extends Controller
     }
 
 
-    /**
-     * @throws ValidationException
-     */
     public function getArticles(GetArticlesRequest $request): JsonResponse
     {
-        $filters = new GetArticlesData($request->only(['keyword', 'date', 'category', 'author',  'source', 'limit']));
-        $articles = $this->articlesService->getArticles($filters, $request->user());
+        $articles = $this->articlesService->getArticles($request->toDto(), $request->user());
 
         return response()->json($articles);
     }

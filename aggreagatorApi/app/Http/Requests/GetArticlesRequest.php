@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Dto\ArticleDto;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -18,7 +19,7 @@ class GetArticlesRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -32,4 +33,15 @@ class GetArticlesRequest extends FormRequest
         ];
     }
 
+    public function toDto():ArticleDto
+    {
+        return new ArticleDto(
+            keyword: $this->keyword,
+            date: $this->date,
+            category: $this->category,
+            source: $this->source,
+            author: $this->author,
+            limit: $this->limit
+        );
+    }
 }
