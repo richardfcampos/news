@@ -1,10 +1,9 @@
 import { useRouter } from 'next/navigation';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import ApiService from '@/api/ApiService';
-import { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
+import { IAxiosError } from '@/api/IAxiosError';
 import {useMemo} from "react";
-import {getMessageService} from "@/services/MessageServiceFactory";
+import { getMessageService } from "@/services/MessageServiceFactory";
 
 interface SignupResponse {
     name: string;
@@ -30,7 +29,6 @@ export default function useSignupForm() {
     const messageService = useMemo(() => getMessageService(), []);
 
     const onSubmit: SubmitHandler<SignupFormInputs> = async (data) => {
-
         try {
             const apiService = new ApiService();
             const response = await apiService.postData<SignupResponse>(`${process.env.NEXT_PUBLIC_API_HOST}/sign-up`, data);
@@ -42,7 +40,8 @@ export default function useSignupForm() {
                 }, 3000);
             }
         } catch (error) {
-            const axiosError = error as AxiosError<{ errors: ValidationError }>;
+            const axiosError = error as IAxiosError<{ errors: ValidationError }>;
+
             if (axiosError.response?.data?.errors) {
                 const validationErrors = axiosError.response.data.errors;
                 Object.keys(validationErrors).forEach((field) => {
@@ -50,7 +49,7 @@ export default function useSignupForm() {
                 });
             } else {
                 console.error(error);
-                toast.error('An unexpected error occurred.');
+                messageService.error('An unexpected error occurred.');
             }
         }
     };
