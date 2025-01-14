@@ -4,12 +4,24 @@ import { useArticles } from "@/context/ArticlesContext";
 import { useModal } from "@/hooks/useModal";
 import { FaFilter } from 'react-icons/fa';
 import UserFilterForm from "@/components/UserFilterForm";
-import {useCallback} from "react";
+import React, { useCallback, useState } from "react";
+import { debounce } from 'lodash';
 import Modal from "@/components/Modal";
+
+const debouncedSetKeyword = debounce((setKeyword: (value: string) => void, value: string) => {
+    setKeyword(value);
+}, 300);
 
 export default function FilterForm() {
     const { keyword, date, category, sources, source, author, authors, setAuthor, setKeyword, setDate, setCategory, setSource, categories, reloadData } = useArticles();
     const { isModalOpen, openModal, closeModal } = useModal();
+    const [localKeyword, setLocalKeyword] = useState(keyword);
+
+    const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setLocalKeyword(value);
+        debouncedSetKeyword(setKeyword, value);
+    };
 
     const handleCloseModal = useCallback(() => {
         closeModal();
@@ -28,8 +40,8 @@ export default function FilterForm() {
                         <input
                             type="text"
                             id="keyword"
-                            value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
+                            value={localKeyword}
+                            onChange={handleKeywordChange}
                             placeholder="Enter keyword"
                             className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 shadow-sm focus:ring-blue-500 focus:border-blue-500"
                         />
