@@ -4,16 +4,23 @@ import { useArticles } from "@/context/ArticlesContext";
 import { useModal } from "@/hooks/useModal";
 import { FaFilter } from 'react-icons/fa';
 import UserFilterForm from "@/components/UserFilterForm";
+import {useCallback} from "react";
+import Modal from "@/components/Modal";
 
 export default function FilterForm() {
-    const { keyword, date, category, sources, source, author, authors, setAuthor, setKeyword, setDate, setCategory, setSource, categories } = useArticles();
+    const { keyword, date, category, sources, source, author, authors, setAuthor, setKeyword, setDate, setCategory, setSource, categories, reloadData } = useArticles();
     const { isModalOpen, openModal, closeModal } = useModal();
+
+    const handleCloseModal = useCallback(() => {
+        closeModal();
+        reloadData();
+    }, [closeModal, reloadData]);
 
     return (
         <div className="flex justify-center items-center">
             <form className="p-6 shadow-md rounded-lg w-full space-y-6">
                 <h2 className="text-xl font-semibold text-gray-800 text-center">Filter Articles</h2>
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                     <div>
                         <label htmlFor="keyword" className="block text-sm font-medium text-gray-700">
                             Keyword
@@ -105,20 +112,10 @@ export default function FilterForm() {
                     </button>
                 </div>
             </form>
-            {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-1/2">
-                        <h2 className="text-xl font-semibold mb-4">Custom Filters</h2>
-                        <UserFilterForm />
-                        <button
-                            onClick={closeModal}
-                            className="mt-4 p-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600"
-                        >
-                            Close
-                        </button>
-                    </div>
-                </div>
-            )}
+            <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+                <h2 className="text-xl font-semibold mb-4">Custom Filters</h2>
+                <UserFilterForm onSubmit={handleCloseModal} />
+            </Modal>
         </div>
     );
 }

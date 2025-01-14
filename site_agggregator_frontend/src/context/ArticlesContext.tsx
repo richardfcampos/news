@@ -1,6 +1,6 @@
 "use client"
 
-import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
+import React, {createContext, useContext, useState, useEffect, ReactNode, useMemo, useCallback} from 'react';
 import ApiService from '@/api/ApiService';
 
 interface Article {
@@ -46,6 +46,7 @@ interface ArticlesContextProps {
   setCategory: (category: string) => void;
   setSource: (source: string) => void;
   setAuthor: (author: string) => void;
+  reloadData: () => void;
 }
 
 const ArticlesContext = createContext<ArticlesContextProps | undefined>(undefined);
@@ -63,30 +64,35 @@ export const ArticlesProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [author, setAuthor] = useState<string>('');
 
   const apiService = useMemo(() => new ApiService(), []);
+  apiService.setToken();
+
+  const fetchArticles = useCallback(async () => {
+    try {
+      const query = new URLSearchParams({
+        keyword,
+        date,
+        category,
+        source,
+        author,
+      }).toString();
+
+      const data = await apiService.fetchData<{ data: Article[], total: number }>(
+        `${process.env.NEXT_PUBLIC_API_HOST}/articles?${query}`
+      );
+      setArticles(data.data);
+      setTotalItems(data.total);
+    } catch (error) {
+      console.error('Failed to fetch articles', error);
+    }
+  }, [apiService, keyword, date, category, source, author]);
+
+  const reloadData = () => {
+    fetchArticles().then(()=>{});
+  };
 
   useEffect(() => {
-    apiService.setToken();
-    const fetchArticles = async () => {
-      try {
-        const query = new URLSearchParams({
-          keyword,
-          date,
-          category,
-          source,
-          author,
-        }).toString();
-
-        const data = await apiService.fetchData<{ data: Article[], total: number }>(
-          `${process.env.NEXT_PUBLIC_API_HOST}/articles?${query}`
-        );
-        setArticles(data.data);
-        setTotalItems(data.total);
-      } catch (error) {
-        console.error('Failed to fetch articles', error);
-      }
-    };
-    fetchArticles();
-  }, [keyword, date, category, source, author]);
+    fetchArticles().then(()=>{});
+  }, [keyword, date, category, source, author, fetchArticles]);
 
   useEffect(() => {
     apiService.setToken();
@@ -99,7 +105,7 @@ export const ArticlesProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
     };
 
-    fetchCategories();
+    fetchCategories().then(()=>{});
   }, [apiService]);
 
   useEffect(() => {
@@ -113,7 +119,7 @@ export const ArticlesProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
     };
 
-    fetchSources();
+    fetchSources().then(()=>{});
   }, [apiService]);
 
   useEffect(() => {
@@ -127,11 +133,11 @@ export const ArticlesProvider: React.FC<{ children: ReactNode }> = ({ children }
       }
     };
 
-    fetchAuthors();
+    fetchAuthors().then(()=>{});
   }, [apiService]);
 
   return (
-    <ArticlesContext.Provider value={{ articles, totalItems, categories, sources, authors, keyword, date, category, source, author, setKeyword, setDate, setCategory, setSource, setAuthor }}>
+    <ArticlesContext.Provider value={{ articles, totalItems, categories, sources, authors, keyword, date, category, source, author, setKeyword, setDate, setCategory, setSource, setAuthor, reloadData }}>
       {children}
     </ArticlesContext.Provider>
   );

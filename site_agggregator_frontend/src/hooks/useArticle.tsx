@@ -32,9 +32,9 @@ interface Article {
 const useArticle = (id: string | undefined) => {
   const [article, setArticle] = useState<Article | null>(null);
   const apiService = useMemo(() => new ApiService(), []);
+  apiService.setToken();
 
   useEffect(() => {
-    apiService.setToken();
 
     if (id) {
       const fetchArticle = async () => {

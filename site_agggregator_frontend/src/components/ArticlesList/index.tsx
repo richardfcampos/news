@@ -29,19 +29,19 @@ export default function ArticlesList() {
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {articles.map(article => (
-          <div
-            key={article.id}
-            className="border p-4 rounded shadow cursor-pointer"
-            onClick={() => handleCardClick(article.id)}
-          >
-            <h2 className="text-xl font-bold">{article.title}</h2>
-            <p>{truncateContent(article.content, 100)}</p>
-          </div>
+            <div
+                key={article.id}
+                className="border p-4 rounded shadow cursor-pointer"
+                onClick={() => handleCardClick(article.id)}
+            >
+              <h2 className="text-xl font-bold">{article.title}</h2>
+              <div dangerouslySetInnerHTML={{__html: truncateContent(article.content, 100) || ''}}/>
+            </div>
         ))}
       </div>
       <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
+          currentPage={currentPage}
+          totalPages={totalPages}
         totalRecords={totalRecords}
         onPageChange={goToPage}
         nextPage={nextPage}
