@@ -9,7 +9,7 @@ export const LoginForm = () => {
     return (
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="w-full max-w-lg bg-white p-10 rounded-lg shadow-lg md:max-w-2xl lg:max-w-3xl">
-                <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Welcome Back</h1>
+                <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">Best Articles</h1>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                     <div>
                         <label htmlFor="email" className="block text-base font-medium text-gray-700 mb-2">
@@ -21,7 +21,7 @@ export const LoginForm = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
-                            className="text-black w-full border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500"
+                            className="text-black w-full rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500 border border-gray-400"
                         />
                     </div>
                     <div>
@@ -34,7 +34,7 @@ export const LoginForm = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
-                            className="text-black w-full border-gray-300 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500"
+                            className="text-black w-full border border-gray-400 rounded-lg p-3 focus:ring-blue-500 focus:border-blue-500"
                         />
                     </div>
                     <button
