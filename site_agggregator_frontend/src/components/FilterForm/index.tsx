@@ -120,7 +120,7 @@ export default function FilterForm() {
                         className="flex items-center p-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
                     >
                         <FaFilter className="mr-2" />
-                        Filter
+                        User Preferences
                     </button>
                 </div>
             </form>

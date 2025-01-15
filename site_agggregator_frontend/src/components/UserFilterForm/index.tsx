@@ -60,7 +60,7 @@ const UserFilterForm = ({ onSubmit }: UserFilterFormProps) => {
                 <button
                     type="button"
                     onClick={() => handleSave(onSubmit)}
-                    className="p-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+                    className="px-10 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
                 >
                     Save
                 </button>
