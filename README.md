@@ -18,9 +18,11 @@ cd yourproject
 
 ### on aggreagatorApi folder
 ```sh
+cp .env.example .env
 composer install
 npm i
 ```
+#### remember to add the api keys
 
 ### After the installing php dependencies and javascript dependencies, run sail to get you php container
 ```sh
@@ -34,11 +36,17 @@ sail artisan migrate:fresh --seed
 
 ### now you should run the site scraper to get the data from the apis
 ```sh
-sail php artisan fetch:articles
+sail artisan fetch:articles
+```
+
+### now could run the scraper as a schedule
+```sh 
+sail artisan schedule:work
 ```
 
 ## Now let's go to the site_agggregator_frontend folder and run
 ```sh
+cp .env.example .env
 npm i
 ```
 
