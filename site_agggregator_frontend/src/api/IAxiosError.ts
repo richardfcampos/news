@@ -1,4 +1,4 @@
-export interface IAxiosError<T = any> {
+export interface IAxiosError<T = unknown> {
     response?: {
         data: T;
     };
