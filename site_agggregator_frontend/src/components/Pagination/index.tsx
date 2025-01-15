@@ -29,18 +29,18 @@ export default function Pagination({ currentPage, totalPages, totalRecords, onPa
   };
 
   return (
-    <div className="flex justify-center items-center space-x-2 mt-4">
+    <div className="flex flex-wrap justify-center items-center space-x-2 mt-4">
       <button
         onClick={() => onPageChange(1)}
         disabled={currentPage === 1}
-        className="px-4 py-2 border-4 rounded disabled:opacity-50"
+        className="px-2 py-1 border rounded disabled:opacity-50"
       >
         First
       </button>
       <button
         onClick={prevPage}
         disabled={currentPage === 1}
-        className="px-4 py-2 border-4 rounded disabled:opacity-50"
+        className="px-2 py-1 border rounded disabled:opacity-50"
       >
         Previous
       </button>
@@ -48,7 +48,7 @@ export default function Pagination({ currentPage, totalPages, totalRecords, onPa
         <button
           key={page}
           onClick={() => onPageChange(page)}
-          className={`px-4 py-2 border-4 rounded ${currentPage === page ? 'bg-blue-500 text-white' : ''}`}
+          className={`px-2 py-1 border rounded ${currentPage === page ? 'bg-blue-500 text-white' : ''}`}
         >
           {page}
         </button>
@@ -56,18 +56,18 @@ export default function Pagination({ currentPage, totalPages, totalRecords, onPa
       <button
         onClick={nextPage}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 border-4 rounded disabled:opacity-50"
+        className="px-2 py-1 border rounded disabled:opacity-50"
       >
         Next
       </button>
       <button
         onClick={lastPage}
         disabled={currentPage === totalPages}
-        className="px-4 py-2 border-4 rounded disabled:opacity-50"
+        className="px-2 py-1 border rounded disabled:opacity-50"
       >
         Last
       </button>
-      <div className="px-4 py-2">
+      <div className="px-2 py-1">
         Total Records: {totalRecords}
       </div>
     </div>
