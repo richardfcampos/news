@@ -10,7 +10,7 @@ class Kernel extends ConsoleKernel
 {
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command(FetchArticles::class)->hourly();
+        $schedule->command(FetchArticles::class)->everyMinute();
     }
 
     protected function commands()
