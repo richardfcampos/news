@@ -29,7 +29,7 @@ export default function Pagination({ currentPage, totalPages, totalRecords, onPa
   };
 
   return (
-    <div className="flex flex-wrap justify-center items-center space-x-2 mt-4">
+    <div className="flex flex-wrap justify-center items-center space-x-2 mt-4 mb-5">
       <button
         onClick={() => onPageChange(1)}
         disabled={currentPage === 1}
