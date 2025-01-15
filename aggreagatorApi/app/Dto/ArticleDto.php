@@ -8,7 +8,7 @@ class ArticleDto
 {
     public function __construct(
         public ?string $keyword,
-        public ?Date $date,
+        public ?string $date,
         public ?int $category,
         public ?int $source,
         public ?int $author,
